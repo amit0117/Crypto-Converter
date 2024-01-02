@@ -22,8 +22,7 @@ const fetchCurrencyLists=expressAsyncHandler(async(req,res)=>{
     
       } catch (error) {
         res.status(404)
-    
-        throw new Error(`${error.message}`)
+        throw new Error(`Oops, Something Went Wrong!!`)
       }
     })
     const getCurrencyById=expressAsyncHandler(async(req,res)=>{
@@ -36,11 +35,19 @@ const fetchCurrencyLists=expressAsyncHandler(async(req,res)=>{
             res.json(json);
           } catch (error) {
             res.status(404)
-            throw new Error(`${error.message}`)
+            throw new Error(`Invalid Request`)
           } 
     })
     const currencyConversion=expressAsyncHandler(async(req,res)=>{
         const {fromCurrency,toCurrency,amount}=req.body
+        console.log(typeof amount)
+        const parsedAmount = parseFloat(amount);
+
+        if(Number.isInteger(parsedAmount)){
+          if(amount<0){
+            res.status(400)
+            throw new Error(`Amount must a whole number`)
+          }
         try {
             const response = await axios.get(`${COIN_MARKET_CAP_ID_URI}?symbol=${fromCurrency},${toCurrency}`, {
               headers
@@ -52,8 +59,13 @@ const fetchCurrencyLists=expressAsyncHandler(async(req,res)=>{
             res.json(convertedAmount);
           } catch (error) {
             res.status(404)
-            throw new Error(`${error.message}`)
+            throw new Error(`Invalid Request`)
           } 
+        }
+        else{
+          res.status(400)
+          throw new Error(`Amount must be a number`)
+        }
           
     })
     export {fetchCurrencyLists,getCurrencyById,currencyConversion}

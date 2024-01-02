@@ -30,7 +30,9 @@ const fectchList=async()=>{
   }catch(error){
    setLoading(false)
    setError(true)
-   setErrorMessage(error.message)
+   setErrorMessage(error.response && error.response.data.message
+    ? error.response.data.message
+    : error.message)
   }
 };
 fectchList();

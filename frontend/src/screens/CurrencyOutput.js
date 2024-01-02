@@ -27,11 +27,19 @@ useEffect(()=>{
         }catch(error){
          setLoading(false)
          setError(true)
-         setErrorMessage(error.message)
+         setErrorMessage(error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message)
         }
       };
       convertCurrency();
       },[amount,fromCurrency,toCurrency])
+      useEffect(()=>{
+        // if(error){
+        //   console.log(error)
+        //   console.log(errorMessage)
+        // }
+      },[error])
   return (
 <FormContainer>
   <h2 className='text-center mt-1'>Output</h2>
