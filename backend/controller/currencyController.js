@@ -40,13 +40,13 @@ const fetchCurrencyLists=expressAsyncHandler(async(req,res)=>{
     })
     const currencyConversion=expressAsyncHandler(async(req,res)=>{
         const {fromCurrency,toCurrency,amount}=req.body
-        console.log(typeof amount)
         const parsedAmount = parseFloat(amount);
 
-        if(Number.isInteger(parsedAmount)){
-          if(amount<0){
+     if (!Number.isNaN(parsedAmount)) {
+
+          if(amount<0.00){
             res.status(400)
-            throw new Error(`Amount must a whole number`)
+            throw new Error(`Amount must be posetive number`)
           }
         try {
             const response = await axios.get(`${COIN_MARKET_CAP_ID_URI}?symbol=${fromCurrency},${toCurrency}`, {
