@@ -46,7 +46,7 @@ const fetchCurrencyLists=expressAsyncHandler(async(req,res)=>{
 
           if(amount<0.00){
             res.status(400)
-            throw new Error(`Amount must be posetive number`)
+            throw new Error(`Amount must be positive number`)
           }
         try {
             const response = await axios.get(`${COIN_MARKET_CAP_ID_URI}?symbol=${fromCurrency},${toCurrency}`, {
